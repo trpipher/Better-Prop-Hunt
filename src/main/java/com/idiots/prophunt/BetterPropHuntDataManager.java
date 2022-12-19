@@ -12,7 +12,7 @@ import java.util.HashMap;
 @Slf4j
 @Singleton
 public class BetterPropHuntDataManager {
-    private final String baseUrl = "http://localhost:8080";
+    private final String baseUrl = "http://73.117.225.50:8080";
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @Inject
