@@ -31,3 +31,27 @@ tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 targetCompatibility = JavaVersion.VERSION_11
+
+tasks.register(name = "shadowJar", type = Jar::class) {
+	dependsOn(configurations.testRuntimeClasspath)
+	manifest {
+		attributes(mapOf("Main-Class" to "com/idiots/prophunt.BetterPropHuntPluginTest"))
+	}
+
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	from(sourceSets.main.get().output)
+	from(sourceSets.test.get().output)
+	from({
+		configurations.testRuntimeClasspath.get().map {
+			if (it.isDirectory) it else zipTree(it)
+		}
+	})
+	exclude("META-INF/INDEX.LIST")
+	exclude("META-INF/*.SF")
+	exclude("META-INF/*.DSA")
+	exclude("META-INF/*.RSA")
+	exclude("**/module-info.class")
+
+	archiveClassifier.set("shadow")
+	archiveFileName.set(rootProject.name + "-" + project.version + "-all.jar")
+}
